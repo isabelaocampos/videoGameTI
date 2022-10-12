@@ -36,7 +36,10 @@ public class Main {
             main.getReader().close();
     }
 
-
+    /**
+    getOptionShowMenu: This method has all the options that the user can choose. The user selects the option by writing the number of the list.
+	* @return option: int: this parameter reads the option entered by the user. 
+	*/
     public int getOptionShowMenu(){
         int option = 0;
         System.out.println("<<<<< Welcome to this videogame >>>>>");
@@ -74,7 +77,7 @@ public class Main {
             playerNickName = reader.next();
             
 
-            //preguntar a nicolas
+            //preguntar
             boolean nickNameNotAble = videoGame.notTheSameNickName(playerNickName);
             if(nickNameNotAble == true){
                 System.out.println("Sorry this nickname is already taken, please try again");

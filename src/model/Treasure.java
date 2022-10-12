@@ -11,11 +11,11 @@ public class Treasure {
     private int amountPerLevel;
 
 
-    public Treasure(String nname, int sscoreForPlayer, String iimageURL, int aamountPerLevel){
-        name = nname;
-        imageURL = iimageURL;
-        scoreForPlayer = sscoreForPlayer;
-        amountPerLevel = aamountPerLevel;
+    public Treasure(String name, int scoreForPlayer, String imageURL, int amountPerLevel){
+        this.name = name;
+        this.imageURL = imageURL;
+        this.scoreForPlayer = scoreForPlayer;
+        this.amountPerLevel = amountPerLevel;
 
     }
 
@@ -23,16 +23,16 @@ public class Treasure {
 		return name; 
 	}
 
-    public void setName(String nname){
-		name = nname; 
+    public void setName(String name){
+      this.name = name; 
 	}
 
     public String getImageURL(){
 		return imageURL; 
 	}
 
-  public void setImageURL(String iimageURL){
-		imageURL = iimageURL; 
+  public void setImageURL(String imageURL){
+		this.imageURL = imageURL; 
     }
 
     public int getScoreForPlayer(){

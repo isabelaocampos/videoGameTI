@@ -16,9 +16,11 @@ public class Level {
     public Player[] players;
 
 
-    public Level(String llevelId, int sscoreToPassLevel){
-        levelId = llevelId;
-        scoreToPassLevel = sscoreToPassLevel;
+    public Level(String levelId, int scoreToPassLevel, int enemiesInIt, int treasuresInIt){
+        this.levelId = levelId;
+        this.scoreToPassLevel = scoreToPassLevel;
+        this.enemiesInIt = enemiesInIt;
+        this.treasuresInIt = treasuresInIt; 
         enemies = new Enemy[SIZE_OF_ENEMIES];
         treasures = new Treasure[SIZE_OF_TREASURES];
         players = new Player[SIZE_OF_PLAYERS_PER_LEVEL];
@@ -28,8 +30,8 @@ public class Level {
         return levelId;
     }
 
-    public void setLevelId(String llevelId){
-        levelId = llevelId;
+    public void setLevelId(String levelId){
+        this.levelId = levelId;
 
     }
 

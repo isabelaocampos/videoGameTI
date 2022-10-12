@@ -10,11 +10,11 @@ public class Enemy{
     private double randomPixelPosition;
     private String typeOfEnemy;
 
-    public Enemy(String nname, int iifBeatenScore, int iifWinnerScore, String ttypeOfEnemy){
-        name = nname;
-        ifBeatenScore = iifBeatenScore;
-        ifWinnerScore = iifWinnerScore;
-        typeOfEnemy = ttypeOfEnemy;  
+    public Enemy(String name, int ifBeatenScore, int ifWinnerScore, String typeOfEnemy){
+        this.name = name;
+        this.ifBeatenScore = ifBeatenScore;
+        this.ifWinnerScore = ifWinnerScore;
+        this.typeOfEnemy = typeOfEnemy;  
     }
 
     public String getName(){
@@ -41,4 +41,7 @@ public class Enemy{
         return null;
     }
 
+    public void setTypeEnemy(){
+    
+    }
 }

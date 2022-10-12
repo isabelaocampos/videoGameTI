@@ -5,20 +5,19 @@ public class Player {
 
     private String nickName;
     private String name;
-    private int initialScore;
+    private int playerScore;
     private int amountOfLives; 
     private String currentLevel;
-    private String scoreToPassCurrentLevel;
+
 
     private String[] nicknames = new String[SIZE_OF_PLAYERS]; 
 
-    public Player(String nnickName, String nname, int iinitialScore, int aamountOfLives, String ccurrentLevel, String sscoreToPassCurrentLevel){
-        nickName = nnickName;
-        name = nname;
-        initialScore = iinitialScore;
-        amountOfLives = aamountOfLives;
-        currentLevel = ccurrentLevel;
-        scoreToPassCurrentLevel = sscoreToPassCurrentLevel;
+    public Player(String nickName, String name, int playerScore, int amountOfLives, String currentLevel){
+        this.nickName = nickName;
+        this.name = name;
+        this.playerScore = playerScore;
+        this.amountOfLives = amountOfLives;
+        this.currentLevel = currentLevel;
     }
 
     public String[] getNickNames(){
@@ -33,13 +32,17 @@ public class Player {
         return nickName;
     }
 
-    public void setNickName(String nnickName){
-        nickName = nnickName;
+    public void setNickName(String nickName){
+        this.nickName = nickName;
     }
 
-    public int setInitialScore(int iinitialScore){
-        initialScore = 10;
-        return initialScore;
+    public int getPlayerScore(){
+        return playerScore;
+    }
+
+    public int setPlayerScore(int playerScore){
+        this.playerScore = 10;
+        return this.playerScore;
     }
 
     public int setAmountOfLives(){
@@ -52,9 +55,6 @@ public class Player {
         return currentLevel;
     }
 
-    public String getScoreToPassCurrentLevel(){
-        return scoreToPassCurrentLevel;
-    }
 
     
 }
