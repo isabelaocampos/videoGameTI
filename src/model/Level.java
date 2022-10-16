@@ -35,6 +35,10 @@ public class Level {
 
     }
 
+    public int getScoreToPassLevel(){
+        return scoreToPassLevel;
+    }
+
     public String addEnemyToLevel(Enemy enemy){
         String msj ="You already created all 25 enemies";
         boolean isEmpty = false;
