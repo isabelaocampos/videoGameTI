@@ -6,31 +6,27 @@ public class Level {
     public static final int SIZE_OF_TREASURES = 50;
     public static final int SIZE_OF_PLAYERS_PER_LEVEL = 5;
 
-    private String levelId;
+    private int levelId;
     private int scoreToPassLevel;
-    private int enemiesInIt;
-    private int treasuresInIt;
 
     public Enemy[] enemies;
     public Treasure[] treasures;
     public Player[] players;
 
 
-    public Level(String levelId, int scoreToPassLevel, int enemiesInIt, int treasuresInIt){
+    public Level(int levelId, int scoreToPassLevel){
         this.levelId = levelId;
-        this.scoreToPassLevel = scoreToPassLevel;
-        this.enemiesInIt = enemiesInIt;
-        this.treasuresInIt = treasuresInIt; 
+        this.scoreToPassLevel = scoreToPassLevel; 
         enemies = new Enemy[SIZE_OF_ENEMIES];
         treasures = new Treasure[SIZE_OF_TREASURES];
         players = new Player[SIZE_OF_PLAYERS_PER_LEVEL];
     }
 
-    public String getLevelId(){
+    public int getLevelId(){
         return levelId;
     }
 
-    public void setLevelId(String levelId){
+    public void setLevelId(int levelId){
         this.levelId = levelId;
 
     }

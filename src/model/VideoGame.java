@@ -1,5 +1,6 @@
 package model;
 
+import java.util.EnumMap;
 
 public class VideoGame{
 
@@ -9,8 +10,10 @@ public class VideoGame{
     public static final int TOTAL_OF_TREASURES = 50;
     public static final int TOTAL_SCORES = 20;
 
+    private int resolutionX;
+    private int resolutionY;
     private Player[] players;
-    private Enemy[] enemies;
+    private static Enemy[] enemies;
     private Level[] levels;
     private Treasure[] treasures;
 
@@ -19,20 +22,15 @@ public class VideoGame{
     private Treasure treasure;
 
     public VideoGame(){
-        levels = new Level[TOTAL_OF_LEVELS];
-        levels[0] = new Level("1", 20, 0, 0);
-        levels[1] = new Level("2", 40, 0, 0);
-        levels[2] = new Level("3", 80, 0, 0);
-        levels[3] = new Level("4", 160, 0, 0);
-        levels[4] = new Level("5", 320, 0, 0);
-        levels[5] = new Level("6", 640, 0, 0);
-        levels[6] = new Level("7", 1280, 0, 0);
-        levels[7] = new Level("8", 2560, 0, 0);
-        levels[8] = new Level("9", 5120, 0, 0);
-        levels[9] = new Level("10", 10240, 0, 0);
+        resolutionX = 1280;
+        resolutionY = 720;
         players = new Player[TOTAL_PLAYERS];
         enemies = new Enemy[TOTAL_OF_ENEMIES];
         treasures = new Treasure[TOTAL_OF_TREASURES];
+
+        for(int i = 0; i < TOTAL_OF_LEVELS; i++){
+            levels[i] = new Level(i + 1,(i + 1)*20);
+        }
     }
 
     public Player getPlayer(){
@@ -64,10 +62,12 @@ public class VideoGame{
 	* @return msj: String: There are two options as result, the first that assures that the user has been added and the second one is a message that
     notifies that the player cannot be added because the array of players is full.
 	*/
+
+    //
     public String createPlayer(String playerNickName, String playerName){
         String msj = "Sorry, we have completed the 20 players.";
         boolean isEmpty = false;
-        Player newPlayer = new Player(playerNickName, playerName, 0, 0, msj);
+        Player newPlayer = new Player(playerNickName, playerName, 0, 0, null);
         for(int i=0; i < TOTAL_PLAYERS && !isEmpty; i++){
             if(players[i] == null){
                 players[i] = newPlayer;
@@ -89,9 +89,11 @@ public class VideoGame{
 	* @return msj: String: There are two options as result, the first that assures that the enemy has been added and the second one is a message that
     notifies that something unexpected happened.
 	*/
-    public String assignEnemyToLevel(String levelId, String enemyName, int typeOfEnemy, int ifBeatenScore, int ifWinnerScore){
+
+    //
+    public String assignEnemyToLevel(int levelId, String enemyName, int typeOfEnemy, int ifBeatenScore, int ifWinnerScore){
         String msj = "Sorry, something unexpected happened. Please try again";
-        Enemy newEnemy = new Enemy(enemyName, ifBeatenScore, ifWinnerScore, typeOfEnemy);
+        Enemy newEnemy = new Enemy(enemyName, ifBeatenScore, ifWinnerScore, typeOfEnemy,levels[levelId-1],resolutionX,resolutionY);
         int posLevel = searchLevelById(levelId);
         if (posLevel != -1){
             msj = levels[posLevel].addEnemyToLevel(newEnemy);
@@ -108,9 +110,11 @@ public class VideoGame{
      * @return msj: String: There are two options as result, the first that assures that the treasure has been added and the second one 
      * is a message that notifies that something unexpected happened.
      */
-    public String assignTreasureToLevel(String levelId, String treasureName, int scoreForPlayer, String imageURL, int amountPerLevel){
+
+    //
+    public String assignTreasureToLevel(int levelId, String treasureName, int scoreForPlayer, String imageURL){
         String msj = "Sorry, something unexpected happened. Please try again";
-        Treasure newTreasure = new Treasure(treasureName, scoreForPlayer, imageURL, amountPerLevel);
+        Treasure newTreasure = new Treasure(treasureName, scoreForPlayer, imageURL, levels[levelId-1]);
         int posLevel = searchLevelById(levelId);
         if (posLevel != -1){
             msj = levels[posLevel].addTreasureToLevel(newTreasure);
@@ -127,19 +131,27 @@ public class VideoGame{
      * @return: msj: String: There are two options as result, the first that assures that the player has changed levels and the second one 
      * is a message that notifies that an error happened.
      */    
-    public String changePlayerLevel(String playerNickName, String levelToGo){
-        String msj = "An error has happen. Try again";
-        Player toChange = searchPlayerByNickName(playerNickName);
-        int levelToLeave = -1;
-        if(toChange != null){
-            levelToLeave = playerLocation(playerNickName);
-        }
-        if(levelToLeave != -1){
-            levels[levelToLeave].deletePlayer(playerNickName);
-            addChangedPlayerToLevel(toChange, levelToGo);
-            msj = "PLayer has been successfully changed";
-        }
 
+    //
+    public String changePlayerLevel(String playerNickName){
+        String msj = "Sorry, an error happened. Try again";
+
+        for(int i = 0; i < TOTAL_PLAYERS; i++){
+            if(players[i] != null && players[i].getNickName().equalsIgnoreCase(playerNickName)){
+
+                if(players[i].getPlayerScore()< players[i].getLevel().getScoreToPassLevel()){
+                    msj = "Sorry the score the player has is not enough to pass level, try again";
+
+                }else if(players[i].getLevel().getLevelId()== 10){ 
+                    msj ="The player has reached the maximum level available";
+
+                }else{
+    
+                    players[i].setLevel(levels[players[i].getLevel().getLevelId()]);
+                    msj +="\n Leveled up: " +players[i].getLevel().getLevelId() + "\n";
+                }
+            }
+        }
         return msj;
     }
 
@@ -150,17 +162,23 @@ public class VideoGame{
      * @param newPlayerScore: int: This parameter is the new score that the player is going to have.
      * @return: msj:
      */
-    public String modifyPlayerScore(String playerNickName, int newPlayerScore){
-        String msj = "";
-        Player toChangeScore = searchPlayerByNickName(playerNickName);
-        
-        if(toChangeScore != null){
-            ;
-            msj = "Score changed successfully";
 
-        }else{
-            msj = "Sorry, we couldn't find the user, try again";
-        }
+     //
+    public String modifyPlayerScore(String playerNickName, int newPlayerScore){
+        String msj ="Sorry we couldn't change the score, try again";
+
+        for(int i = 0; i<TOTAL_PLAYERS; i++){
+            if(players[i] != null && players[i].getNickName().equalsIgnoreCase(playerNickName)){
+
+                if(players[i].getPlayerScore()>= newPlayerScore){
+                    msj = "Sorry, you can only change the score with a greater socre than the actual one";
+
+                }else{
+                    players[i].setPlayerScore(newPlayerScore);}
+                    msj = "Score changed successfully";
+                }
+            }
+        
         return msj;
     }
 
@@ -169,10 +187,35 @@ public class VideoGame{
      * @param enemyType: String: This parameter is the type of enemy that the user wants to know.
      * @return: msj; String: A list with the levels where the type of enemy is.
      */
-    public static String sameEnemyInLevel(String enemyType){
-        String msj = "";
+    public String sameEnemyInGame(int enemyType){
+        String msj ="Enemies found: ";
+        int counter = 0;
+        for(int i = 0; i < TOTAL_OF_ENEMIES; i++){
+            if(enemies[i] != null && enemies[i].getTypeOfEnemy() == enemyType){
+                counter ++;
+            }
+        }
+        if(counter == 0){
+            msj="Sorry we couldn't find any enemies";
+        }else{
+            msj += counter;
+        }
+        return msj;
+    }
         
-        
+    public String sameTreasureInGame(String treasureName){
+        String msj = "Treasures found: ";
+        int counter = 0;
+        for(int i = 0; i < TOTAL_OF_TREASURES; i++){
+            if(treasures[i] != null && treasures[i].getTreasureName().equalsIgnoreCase(treasureName)){
+                counter ++;
+            }
+        }
+        if(counter == 0 ){
+            msj ="Sorry we couldn't any treasures";
+        }else{
+            msj += counter;
+        }
         return msj;
     }
 
@@ -230,14 +273,14 @@ public class VideoGame{
         for(int i = 0; i< TOTAL_OF_TREASURES; i++){
 
             for(int j = 0; j < TOTAL_OF_TREASURES; j++){
-                if(treasures[i]!=null && treasures[j]!= null && treasures[i].getName().equalsIgnoreCase(treasures[j].getName())){
+                if(treasures[i]!=null && treasures[j]!= null && treasures[i].getTreasureName().equalsIgnoreCase(treasures[j].getTreasureName())){
                     counter ++;
                 }
             
             }
             if(counter > maxAmountTreasure ){
                 maxAmountTreasure =counter;
-                maxNameTreasure = treasures[i].getName();
+                maxNameTreasure = treasures[i].getTreasureName();
             }
         }
         msj += maxAmountTreasure;
@@ -246,9 +289,35 @@ public class VideoGame{
 
     }
 
+    public String listEnemies(int level){
+        String msj ="Enemies: ";
+
+        for(int i = 0; i < TOTAL_OF_ENEMIES; i++){
+            if(enemies[i] != null && enemies[i].getLevel().getLevelId()==level){
+                msj += enemies[i].getEnemyName() + ", ";
+            }
+        }
+
+        return msj;
+    }
+
+    public String listTreasure(int level){
+        String msj ="Treasures: ";
+
+        for(int i = 0; i < TOTAL_OF_TREASURES; i++){
+            if(treasures[i] != null && treasures[i].getLevel().getLevelId()==level){
+                msj += treasures[i].getTreasureName() + ", ";
+            }
+        }
+
+        return msj;
+    }
+
+
+
     //////////////////////////////////////////////////
 
-    public void addChangedPlayerToLevel(Player toAdd, String levelId){
+    public void addChangedPlayerToLevel(Player toAdd, int levelId){
         String msj = "Player cannot be added to level";
         int pos = searchLevelById(levelId); 
         if(pos != -1){
@@ -256,18 +325,20 @@ public class VideoGame{
         }
     }
 
-    public int searchLevelById(String levelId){
-    int pos = -1;
-    boolean isFound = false;
-    for(int i = 0; i < TOTAL_OF_ENEMIES && !isFound; i++){
-        if(levels[i].getLevelId().equalsIgnoreCase(levelId)){
-            pos = i;
-            isFound = true;
+    public int searchLevelById(int levelId){
+        int pos = -1;
+        boolean isFound = false;
+        for(int i = 0; i < TOTAL_OF_ENEMIES && !isFound; i++){
+            if(levels[i].getLevelId() == (levelId)){
+                pos = i;
+                isFound = true;
+            }
         }
-    }
-    return pos;
-}
+        return pos;
 
+    }
+
+    //
     public Player searchPlayerByNickName(String nickName){
 		Player foundPlayer = null;
 		for(int i=0; i < TOTAL_PLAYERS && foundPlayer == null; i++){
@@ -277,6 +348,18 @@ public class VideoGame{
 		}
 		return foundPlayer;
 	}
+    
+    public Enemy searchEnemyByName(String enemyName){
+		Enemy foundPlayer = null;
+		for(int i=0; i < TOTAL_PLAYERS && foundPlayer == null; i++){
+			if(enemies[i] !=null && enemies[i].getEnemyName().equalsIgnoreCase(enemyName)){
+				foundPlayer = enemies[i];
+			}
+		}
+		return foundPlayer;
+	}
+    
+
 
     public int playerLocation(String nickNameToFind){
 
@@ -302,6 +385,35 @@ public class VideoGame{
         return nickNameNotAble;
     }
 
+    public String emptySpacePlayers(){
+        String msj ="available position";
+        if(players[0] == null){
+            msj = "0 players";
+        }else if(players[TOTAL_PLAYERS-1] != null){
+            msj = "reached limit";
+        }
+        return msj;
+    } 
+
+    public String emptySpaceEnemies(){
+        String msj ="available position";
+        if(enemies[0] == null){
+            msj = "0 enemies";
+        }else if(enemies[TOTAL_OF_ENEMIES-1] != null){
+            msj = "reached limit";
+        }
+        return msj;
+    }
+
+    public String emptySpaceTreasures(){
+        String msj ="available position";
+        if(treasures[0]==null){
+            msj = "0 treasures";
+        }else if(treasures[TOTAL_OF_TREASURES-1] != null){
+            msj = "reached limit";
+        }
+        return msj;
+    }
 
 }
 

@@ -1,5 +1,5 @@
 package model;
-
+import java.util.Random;
 
 public class Enemy{
     public static final int SIZE_OF_ENEMIES = 25;
@@ -9,11 +9,18 @@ public class Enemy{
     private int ifWinnerScore;
     private double randomPixelPosition;
     private TypeEnemy typeOfEnemy;
+    private Level level;
+    private int posX;
+    private int posY;
 
-    public Enemy(String name, int ifBeatenScore, int ifWinnerScore, int typeOfEnemy){
+    public Enemy(String name, int ifBeatenScore, int ifWinnerScore, int typeOfEnemy, Level level, int resolutionX, int resolutionY){
         this.name = name;
         this.ifBeatenScore = ifBeatenScore;
         this.ifWinnerScore = ifWinnerScore;  
+        this.level = level;
+        Random random = new Random();
+        posX = random.nextInt(resolutionX);
+        posY = random.nextInt(resolutionY);
 
         switch(typeOfEnemy){
             case 1:
@@ -34,7 +41,7 @@ public class Enemy{
         }
     }
 
-    public String getName(){
+    public String getEnemyName(){
         return name;
     }
 
@@ -73,5 +80,13 @@ public class Enemy{
 
     public void setTypeEnemy(){
     
+    }
+
+    public void setLevel(Level level){
+        this.level = level;
+    }
+
+    public Level getLevel(){
+        return level;
     }
 }

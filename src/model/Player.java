@@ -7,17 +7,18 @@ public class Player {
     private String name;
     private int playerScore;
     private int amountOfLives; 
-    private String currentLevel;
+    private Level level;
 
 
     private String[] nicknames = new String[SIZE_OF_PLAYERS]; 
 
-    public Player(String nickName, String name, int playerScore, int amountOfLives, String currentLevel){
+    public Player(String nickName, String name, int playerScore, int amountOfLives, Level level){
         this.nickName = nickName;
         this.name = name;
         this.playerScore = playerScore;
         this.amountOfLives = amountOfLives;
-        this.currentLevel = currentLevel;
+        this.level = level;
+
     }
 
     public String[] getNickNames(){
@@ -50,11 +51,13 @@ public class Player {
         return amountOfLives;
     }
 
-    public String setCurrentLevel(){
-        currentLevel = "1";
-        return currentLevel;
+    public void setLevel(Level level){
+        this.level = level;
     }
 
+    public Level getLevel(){
+        return level;
+    }
 
     
 }
