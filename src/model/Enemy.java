@@ -2,8 +2,6 @@ package model;
 import java.util.Random;
 
 public class Enemy{
-    public static final int SIZE_OF_ENEMIES = 25;
-
     private String name; 
     private int ifBeatenScore;
     private int ifWinnerScore;
@@ -57,6 +55,22 @@ public class Enemy{
         return randomPixelPosition;
     }
 
+    public String addEnemy(Enemy newEnemy) {
+        return null;
+    }
+
+    public void setTypeEnemy(){
+    
+    }
+
+    public void setLevel(Level level){
+        this.level = level;
+    }
+
+    public Level getLevel(){
+        return level;
+    }
+
     public int getTypeOfEnemy(){
         switch(typeOfEnemy){
             case OGRE:
@@ -74,19 +88,5 @@ public class Enemy{
         
     }
 
-    public String addEnemy(Enemy newEnemy) {
-        return null;
-    }
-
-    public void setTypeEnemy(){
     
-    }
-
-    public void setLevel(Level level){
-        this.level = level;
-    }
-
-    public Level getLevel(){
-        return level;
-    }
 }

@@ -11,15 +11,14 @@ public class Main {
     public Main(){
         reader = new Scanner(System.in);
         videoGame = new VideoGame();
-
     }
 
     public Scanner getReader(){
         return reader;
     }
 
-    public void setReader(Scanner reader){
-        this.reader = reader;
+    public VideoGame getVideoGame(){
+        return videoGame;
     }
 
     public static void main(String[] args){
@@ -34,16 +33,12 @@ public class Main {
 
     }
 
+    /**
+	* getOptionShowMenu: This method will show the menu
+	* @return the message displaying will return an option when the user choose one
+	*/
     public int getOptionShowMenu(){
-        int option = 0; 
-        printMenu();
-
-        option = validateIntegerOption(); 
-
-        return option; 
-}
-
-public void printMenu(){
+        int option = 0;
             System.out.println("<<<<< Welcome to this videogame >>>>>");
             System.out.println(
             "1. Create player \n" +
@@ -58,8 +53,12 @@ public void printMenu(){
             "10. Enemy that gives more score and where is located \n" +
             "11. Consonants found in the names of all enemies \n" +
             "12. Top 5 players \n" +
-            "0. Exit");  
-}
+            "0. Exit"); 
+            
+            option = validateIntegerOption(); 
+
+            return option; 
+    }   
 
 
     public void executeOption(int option){
@@ -84,8 +83,7 @@ public void printMenu(){
                         }else{
                             System.out.println("Write the name of the player: ");
                             playerName = reader.nextLine();
-                            msj = videoGame.createPlayer(playerName, playerNickName);
-                        System.out.println(msj);
+                            System.out.println(videoGame.createPlayer(playerName, playerNickName));
                         }
             
                 }
@@ -170,7 +168,7 @@ public void printMenu(){
             break;
             
             case 5:
-            if(videoGame.emptySpacePlayers().equals("No hay jugadores ")){
+            if(videoGame.emptySpacePlayers().equals("0 players")){
                 System.out.println(videoGame.emptySpacePlayers());
             }else{
                 reader.nextLine();
@@ -179,7 +177,7 @@ public void printMenu(){
                 playerNickName = reader.nextLine();
                 if(videoGame.searchPlayerByNickName(playerNickName) == null){
                         
-                    System.out.println("Error, nickName no existe");
+                    System.out.println("Error, nickname doesn't exist");
 
                 }else{
                     System.out.println(videoGame.changePlayerLevel(playerNickName));
@@ -219,16 +217,16 @@ public void printMenu(){
             }else{
                 System.out.println("You are about to be inform of a type of enemy found in all the levels");
                 System.out.print("\n Write the type of enemy you want to search" +
-                "\n 1. Ogre" +
-                "\n 2. Abstract" +
-                "\n 3. Boss" +
-                "\n 4. Magician");
+                "1. Ogre \n"+
+                "2. Abstract \n"+
+                "3. Boss \n"+
+                "4. Magician \n");
 
                 int typeOfEnemy = reader.nextInt();
                 if(typeOfEnemy > 4 || typeOfEnemy < 1){
                     System.out.println("Invalid option");
                 }else{
-                    System.out.println(videoGame.allEnemies(typeOfEnemy));
+                    System.out.println(videoGame.sameEnemyInGame(typeOfEnemy));
                 }
             }
             break;
@@ -249,6 +247,9 @@ public void printMenu(){
 
             case 11:
                 System.out.println("You are about to know the consonants found in the name of all enemies");
+                System.out.println("Enter the name of the Enemy:");
+			    enemyName = reader.next();
+
                 System.out.println(videoGame.consonantsEnemies());
             break;
                 
