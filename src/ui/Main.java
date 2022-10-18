@@ -1,7 +1,7 @@
 package ui;
 
 import java.util.Scanner;
-import model.VideoGame;
+import model.*;
 
 public class Main {
     
@@ -14,180 +14,169 @@ public class Main {
 
     }
 
-    public VideoGame getVideoGame(){
-        return videoGame;
-    }
-
     public Scanner getReader(){
         return reader;
     }
 
-    public static void main(String[] args){
+    public void setReader(Scanner reader){
+        this.reader = reader;
+    }
 
+    public static void main(String[] args){
         Main main = new Main();
 
         int option = 0;
-
             do{
                 option = main.getOptionShowMenu();
                 main.executeOption(option);
+
             }while(option != 0);
 
-            main.getReader().close();
     }
 
-    /**
-    getOptionShowMenu: This method has all the options that the user can choose. The user selects the option by writing the number of the list.
-	* @return option: int: this parameter reads the option entered by the user. 
-	*/
     public int getOptionShowMenu(){
-        int option = 0;
-        System.out.println("<<<<< Welcome to this videogame >>>>>");
-        System.out.println(
+        int option = 0; 
+        printMenu();
+
+        option = validateIntegerOption(); 
+
+        return option; 
+}
+
+public void printMenu(){
+            System.out.println("<<<<< Welcome to this videogame >>>>>");
+            System.out.println(
             "1. Create player \n" +
             "2. Add enemy to level \n" +
             "3. Add treasure to level \n" +
-            //"4. Modify the score of a player \n" +
+            "4. Modify the score of a player \n" +
             "5. Change player of level \n" + 
-            //"6. Treasures and Enemies in a level - List \n" +
-            //"7. Amount of a treasure in all levels \n" +
-            //"8. Amount of a enemies in all levels \n" +
-            //"9. Most repeated treasure in the game \n" +
-            //"10. Enemy that gives more score and where is located \n" +
-            //"11. Consonants found in the names of all enemies \n" +
-            //"12. Top 5 players \n" +
-            "0. Exit");
-        option = reader.nextInt();
+            "6. Treasures and Enemies in a level - List \n" +
+            "7. Amount of a treasure in all levels \n" +
+            "8. Amount of a enemies in all levels \n" +
+            "9. Most repeated treasure in the game \n" +
+            "10. Enemy that gives more score and where is located \n" +
+            "11. Consonants found in the names of all enemies \n" +
+            "12. Top 5 players \n" +
+            "0. Exit");  
+}
 
-        return option;
-    }
 
     public void executeOption(int option){
 
         String playerName, playerNickName, msj, enemyName, imageURL, treasureName= "";
-        int ifBeatenScore, ifWinnerScore, amountPerLevel,scoreForPlayer, newScorePlayer = 0;
-        int scoreToPassLevel, typeOfEnemy, levelId, levelToGo = 0;
+        int ifBeatenScore, ifWinnerScore, scoreForPlayer, newScorePlayer = 0;
+        int scoreToPassLevel, typeOfEnemyOfEnemy, levelId, levelToGo, amountPerLevel = 0;
+
         switch(option){
-            
-
             case 1: 
-            
-            System.out.println("You are now creating a new player");
-            if(videoGame.emptySpacePlayers().equals("reached limit")){
-                System.out.println(videoGame.emptySpacePlayers());
+                if(videoGame.emptySpacePlayers().equals("reached limit")){
+                    System.out.println(videoGame.emptySpacePlayers());
                 
-            }else{
-                reader.nextLine();
-                System.out.println("Write the nickname of the player, this will be their identifier: ");
-                playerNickName = reader.next();
-                if(videoGame.searchPlayerByNickName(playerNickName) != null){
-                    
-                    System.out.println("Sorry this nickname is already taken, please try again");
+                    }else{
+                        reader.nextLine();
+                        System.out.println("You are now creating a new player \n" +  
+                        "Write the nickname of the player, this will be their identifier: ");
+                        playerNickName = reader.nextLine();
+                        if(videoGame.searchPlayerByNickName(playerNickName) != null){
+                            System.out.println("Sorry this nickname is already taken, please try again");
 
-                }else{
-
-                    System.out.println("Write the name of the player: ");
-                    playerName = reader.next();
-                    msj = videoGame.createPlayer(playerName, playerNickName);
-                    System.out.println(msj);
-                }
+                        }else{
+                            System.out.println("Write the name of the player: ");
+                            playerName = reader.nextLine();
+                            msj = videoGame.createPlayer(playerName, playerNickName);
+                        System.out.println(msj);
+                        }
             
-            }
+                }
+
             break;
 
             case 2:
-            
-            System.out.println("You are now adding a new enemy to a level");
-            if(videoGame.emptySpaceEnemies().equals("reached limit")){
-                System.out.println(videoGame.emptySpaceEnemies());
-            }else{
-                reader.nextLine();
-                System.out.println("Write the name of the enemy: ");
-                enemyName = reader.next();
-                if(videoGame.searchEnemyByName(enemyName) != null){
-                    System.out.println("Sorry this enemy  already exist, try again");
+                if(videoGame.emptySpaceEnemies().equals("reached limit")){
+                    System.out.println(videoGame.emptySpaceEnemies());
                 }else{
-                    System.out.print("Write the type of enemy: \n"+
-                    "\n 1. Ogre"+
-                    "\n 2. Abstract"+
-                    "\n 3. Boss"+
-                    "\n 4. Magician");
-
-                    typeOfEnemy = reader.nextInt();
-                    System.out.println("Write the score that the player get's if it beats the enemy: ");
-                    ifBeatenScore = reader.nextInt();
-                    System.out.println("Write the score that the player will lose if he can't beat the enemy: ");
-                    ifWinnerScore = reader.nextInt();
-                    System.out.println(videoGame.printLevels());
-                    System.out.println("Write the level you want the enemy to be: ");
-                    levelId = reader.nextInt();
-                    if(levelId > 10 || levelId < 1){
-                        System.out.println("Invalid level, try again");
+                    reader.nextLine();
+                    System.out.println("You are now adding a new enemy to a level");
+                    System.out.println("Write the name of the enemy: ");
+                    enemyName = reader.nextLine();
+                
+                    if(videoGame.searchEnemyByName(enemyName) != null){
+                        System.out.println("Sorry this enemy  already exist, try again");
                     }else{
-                        System.out.println(videoGame.assignEnemyToLevel(levelId, enemyName, typeOfEnemy, ifBeatenScore, ifWinnerScore));
-                    }
+                        System.out.print("Write the typeOfEnemy of enemy: \n"+
+                        "1. Ogre \n"+
+                        "2. Abstract \n"+
+                        "3. Boss \n"+
+                        "4. Magician \n");
 
+                        typeOfEnemyOfEnemy = reader.nextInt();
+                        System.out.println("Write the score that the player get's if it beats the enemy: ");
+                        ifBeatenScore = reader.nextInt();
+                        System.out.println("Write the score that the player will lose if he can't beat the enemy: ");
+                        ifWinnerScore = reader.nextInt();
+                        System.out.println("Write the level you want the enemy to be, remember there are only 10 levels: ");
+                        levelId = reader.nextInt();
+                        if(levelId > 10 || levelId < 1){
+                            System.out.println("Invalid level, try again");
+                        }else{
+                            System.out.println(videoGame.assignEnemyToLevel(levelId, enemyName, typeOfEnemyOfEnemy, ifBeatenScore, ifWinnerScore));
+                        }
+
+                    }
                 }
-            }
-            
             break; 
 
             case 3: 
-
-            System.out.println("You are now adding a new treasure to a level");
-            if(videoGame.emptySpaceTreasures().equals("reached limit")){
-                System.out.println(videoGame.emptySpaceTreasures());
-            }else{
-                reader.nextLine();
-                System.out.println("Write the name of the treasure: ");
-                treasureName= reader.next();
-                System.out.println("Enter the image URL of the enemy: ");
-                imageURL = reader.next();
-                System.out.println("Write the score the player get's if it finds the treasure: ");
-                scoreForPlayer= reader.nextInt();
-                System.out.println(videoGame.printLevels());
-                System.out.println("Write the level you want the treasure to be: ");
-                levelId = reader.nextInt();
+                if(videoGame.emptySpaceTreasures().equals("reached limit")){
+                    System.out.println(videoGame.emptySpaceTreasures());
+                }else{
+                    reader.nextLine();
+                    System.out.println("You are now adding a new treasure to a level");
+                    System.out.println("Write the name of the treasure: ");
+                    treasureName= reader.nextLine();
+                    System.out.println("Enter the image URL of the enemy: ");
+                    imageURL = reader.nextLine();
+                    System.out.println("Write the score the player get's if it finds the treasure: ");
+                    scoreForPlayer= reader.nextInt();
+                    System.out.println("Write the amount of the same treasure in the level");
+                    amountPerLevel = reader.nextInt();
+                    System.out.println("Write the level you want the treasure to be, remember there are only 10 levels: ");
+                    levelId = reader.nextInt();
                 if(levelId > 10 || levelId < 1){
                     System.out.println("Invalid level, try again");
                 }
-                System.out.println(videoGame.assignTreasureToLevel(levelId, treasureName, scoreForPlayer, imageURL));
-            }
-            
+                    System.out.println(videoGame.assignTreasureToLevel(levelId, treasureName, scoreForPlayer, imageURL, amountPerLevel));
+                }
             break;
 
             case 4:
-
-            System.out.println("You are about to modify the score of a player");
-            if(videoGame.emptySpacePlayers().equals("0 players")){
-                System.out.println(videoGame.emptySpacePlayers());
+                if(videoGame.emptySpacePlayers().equals("0 players")){
+                    System.out.println(videoGame.emptySpacePlayers());
             
-            }else{
-                reader.nextLine();
-                System.out.println("Write the id of the player you want to modify their score: ");
-                playerNickName = reader.next();
-                if(videoGame.searchPlayerByNickName(playerNickName) == null){
-                        
+                }else{
+                    reader.nextLine();
+                    System.out.println("You are about to modify the score of a player");
+                    System.out.println("Write the id of the player you want to modify their score: ");
+                    playerNickName = reader.nextLine();
+                if(videoGame.searchPlayerByNickName(playerNickName) == null){    
                     System.out.println("Sorry, we couldn't find this player. Try again");
-
                 }else{
                     System.out.println("Write the new score of the player, remember is has to be greater or the same score that is has: ");
                     newScorePlayer = reader.nextInt();
                     System.out.println(videoGame.modifyPlayerScore(playerNickName,reader.nextInt()));
                 }
             }
-
             break;
             
             case 5:
-
-            System.out.println("You are now changing a player to a different level");
             if(videoGame.emptySpacePlayers().equals("No hay jugadores ")){
                 System.out.println(videoGame.emptySpacePlayers());
             }else{
                 reader.nextLine();
+                System.out.println("You are now changing a player to a different level");
                 System.out.println("Write the nickname of the player: ");
-                playerNickName = reader.next();
+                playerNickName = reader.nextLine();
                 if(videoGame.searchPlayerByNickName(playerNickName) == null){
                         
                     System.out.println("Error, nickName no existe");
@@ -217,47 +206,56 @@ public class Main {
             if(videoGame.emptySpaceTreasures().equals("0 treasures")){
                 System.out.println(videoGame.emptySpaceTreasures());
             }else{
-                System.out.println("Por favor dime el nombre del tesoro que deseas consultar");
+                System.out.println("You are about to be inform of a treasure found in all the levels");
+                System.out.println("Write the name of the treasure: ");
                 reader.nextLine();
-                System.out.println(videoGame.listTreasureInAllGame(reader.nextLine()));
+                System.out.println(videoGame.listTreasureInGame(reader.next()));
             }
             break;
 
             case 8:
-            if(videoGame.emptySpaceEnemies().equals("No hay Enemigos ")){
+            if(videoGame.emptySpaceEnemies().equals("0 enemies")){
                 System.out.println(videoGame.emptySpaceEnemies());
             }else{
+                System.out.println("You are about to be inform of a type of enemy found in all the levels");
+                System.out.print("\n Write the type of enemy you want to search" +
+                "\n 1. Ogre" +
+                "\n 2. Abstract" +
+                "\n 3. Boss" +
+                "\n 4. Magician");
 
-                System.out.print("\nQue enemigo deseas consultar"+
-                "\n1.Ogro"+
-                "\n2.Abstracto"+
-                "\n3.Jefe"+
-                "\n4.Magico"+
-                "\nOpcion: ");
-                int type = reader.nextInt();
-                if(type > 4 || type < 1){
-                    System.out.println("Opcion invalida");
+                int typeOfEnemy = reader.nextInt();
+                if(typeOfEnemy > 4 || typeOfEnemy < 1){
+                    System.out.println("Invalid option");
                 }else{
-                    System.out.println(videoGame.amountEnemiesType(type));
+                    System.out.println(videoGame.allEnemies(typeOfEnemy));
                 }
             }
             break;
             
             case 9:
-            if(videoGame.emptySpaceTreasures().equals("No hay tesoros")){
+            if(videoGame.emptySpaceTreasures().equals("0 treasures")){
                 System.out.println(videoGame.emptySpaceTreasures());
             }else{
-                System.out.println(videoGame.countTreasuresName());
+                System.out.println("You are about to see the treasure that reapeats the most in all levels");
+                System.out.println(videoGame.mostReapeatedTreasure());
             }
             break;
 
             case 10:
+                System.out.println("You are about to know the enemy with more score and in which level is located");
+                System.out.println(videoGame.enemyWithMaxScore());
             break;
 
             case 11:
+                System.out.println("You are about to know the consonants found in the name of all enemies");
+                System.out.println(videoGame.consonantsEnemies());
             break;
+                
 
             case 12:
+                System.out.println("You are about to see the top 5 players of the game");
+                System.out.println(videoGame.topFivePlayers());
             break;
 
             default:
@@ -275,8 +273,7 @@ public class Main {
             option = reader.nextInt(); 
         }
         else{
-            // clear reader. 
-            reader.nextLine(); 
+            reader.next(); 
             option = -1; 
         }
 

@@ -9,13 +9,15 @@ public class Treasure {
     private int scoreForPlayer;
     private double randomPixelPosition;
     private Level level;
+    private int amountPerLevel;
 
 
-    public Treasure(String name, int scoreForPlayer, String imageURL, Level level){
+    public Treasure(String name, int scoreForPlayer, String imageURL, Level level, int amountPerLevel){
         this.name = name;
         this.imageURL = imageURL;
         this.scoreForPlayer = scoreForPlayer;
         this.level = level;
+        this.amountPerLevel = amountPerLevel;
 
     }
 
@@ -35,17 +37,24 @@ public class Treasure {
 		this.imageURL = imageURL; 
     }
 
-    public int getScoreForPlayer(){
-     return scoreForPlayer; 
+  public int getScoreForPlayer(){
+    return scoreForPlayer; 
     } 
 
-    public void setLevel(Level level){
-      this.level = level;
+  public void setLevel(Level level){
+    this.level = level;
   }
 
   public Level getLevel(){
-      return level;
+     return level;
   }
-    
+  
+  public int getAmountPerLevel(){
+    return amountPerLevel;
+  }
+
+  public void setAmountPerLevel(int amountPerLevel){
+    this.amountPerLevel = amountPerLevel;
+  }
 	}
 
